@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block 'metadescription' %}
+  This is the cart page. proceed to review your items and place the order
+{% endblock %}
+
+{% block title %}
+Cart-WORLD CLASS FOOD STORE
+    Search
+{% endblock %}
+
+{% block content %}
+{% if not cart_items %}
+<div>
+    <div class="text-center">
+        <br>
+        <h1 class="text-center my_title">Your Shopping Cart is empty</h1>
+        <br>
+        <p class="text-center">
+            Please Click <a href="{% url 'shop:allprodcat' %}">Here</a>to continue
+        </p>
+
+    </div>
+
+{% else %}
+<div>
+    <div class="text-center">
+        <br>
+        <h1 class="text-center my_title">My Cart</h1>
+        <br>
+    </div>
+</div>
+<div class="row mx_auto">
+    <div class="col-12 col-sm-12 col-md-12 col-lg-6 text-center">
+        <table class="table my_custom_table">
+            <thead class="my_custom_thead">
+                <tr>
+                    <th colspan="5">
+                        Your basket
+                    </th>
+                </tr>
+
+            </thead>
+            <tbody>
+                {% for cart_item in cart_items %}
+                <tr>
+                    <td>
+                        <a href="cart_item.product.get_absolute_url"><img src="{{cart_item.product.image.url}} " style="width:110px;height:110px"></a>
+                    </td>
+                    <td>
+                        {{cart_item.product.name}}
+                        <br>
+                        SKU: {{cart_item.product.id}}
+                        <br>
+                        Price: $ {{cart_item.product.price}}
+                        <br>
+                        QTY: {{cart_item.quantity}} X $ {{cart_item.product.price}}
+                    </td>
+                    <td>
+                        $ {{cart_item.sub_total}}
+                    </td>
+                    {% if cart_item.quantity < cart_item.product.stock %}
+                    <td>
+                        <a href="{% url 'cart:add_cart' cart_item.product.id %}" class="custom_a"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
+</svg></a>
+                        &nbsp;<a href="{% url 'cart:cart_remove' cart_item.product.id %}" class="custom_a"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash-circle-fill" viewBox="0 0 16 16">
+  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM4.5 7.5a.5.5 0 0 0 0 1h7a.5.5 0 0 0 0-1h-7z"/>
+</svg></a>
+                        &nbsp;<a href="{% url 'cart:all_remove' cart_item.product.id %}" class="custom_icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+  <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
+</svg></a>
+                    </td>
+                    {% else %}
+                    <td>
+
+                        &nbsp;<a href="{% url 'cart:cart_remove' cart_item.product.id %}" class="custom_a"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash-circle-fill" viewBox="0 0 16 16">
+  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM4.5 7.5a.5.5 0 0 0 0 1h7a.5.5 0 0 0 0-1h-7z"/>
+</svg></i></a>
+                        &nbsp;<a href="{% url 'cart:full_remove' cart_item.product.id %}" class="custom_icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+  <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
+</svg></i></a>
+                    </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+
+        </table>
+
+    </div>
+    <div class="col-12 col-sm-12 col-md-12 col-lg-6 text-center">
+        <table class="table my_custom_table">
+            <thead class="my_custom_head">
+                <tr>
+                    <th>
+                        Checkout
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        Please review your shopping cart items before proceeding with order payment.
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-left">
+                        Your Total  :<strong>$ {{ total }}</strong>
+                    </td>
+
+                </tr>
+            </tbody>
+        </table>
+        <div class="mx_auto">
+            <a href="{% url 'shop:allprodcat' %}" class="btn btn-secondary  my_custom_button">Continue Shopping</a>
+            <a href="{% url 'shop:allprodcat' %}" class="btn btn-success  my_custom_button">Make Payment</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+    </div>
+
+
+{% endblock %}

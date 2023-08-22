@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+    {% if category %}
+        {{ category.description|truncatewords:155 }}
+    {% else %}
+        welcome to e-commerce store, get what you deserve!
+    {% endif %}
+{% endblock %}
+{% block title %}
+     {% if category %}
+        {{ category.name}} - ecommerce store
+     {% else %}
+        see the latest collections
+     {% endif %}
+{% endblock %}
+
+{% block content %}
+{% if category %}
+    <div>
+        <div class="row my_row_class">
+            <div class="mx-auto">
+            <p><a href="{% url 'shop:allprodcat' %}">Our product collections</a></p>
+        </div>
+            </div>
+    </div>
+{% endif %}
+<div class="mx_auto">
+    {% if category %}
+    <img class="my_image" src="{{category.image.url}}" width="100%" height="250px" alt="{{category.name}}">
+</div>
+<br>
+<div>
+    <h2 class="text-center my_title">{{category.name}}</h2>
+    <p class="text-justify">{{category.description}}</p>
+</div>
+    {% else %}
+        <div>
+            <img class="my_image" src="{% static 'img/banner.png' %}" alt="our products" width="1116px">
+        </div>
+<br>
+<div>
+    <h2 class="text-align:center my_title"> Our products to buy</h2>
+    <p class="text-justify my_p">Food is any substance consumed by an organism for nutritional support.
+        Food is usually of plant, animal, or fungal origin and contains essential nutrients such as carbohydrates,
+        fats, proteins, vitamins, or minerals. The substance is ingested by an organism and assimilated by the
+        organism's cells to provide energy, maintain life, or stimulate growth. Different species of animals have
+        different feeding behaviours that satisfy the needs of their metabolisms and have evolved to fill a specific
+        ecological niche within specific geographical contexts.</p>
+</div>
+{% endif %}
+<div class="container">
+    <div class="row mx-auto">
+        {% for product in products.object_list %}
+            <div class="my_bottom_margin col-9 col-sm-12 col-md-4 col-lg-4">
+                <div class="card text-center" style="min-width:18rem;">
+                    <a href="{{product.get_url}}"><img class="card-img-top my_image" src="{{product.image.url}}" width="250px" height="200px" alt="{{product.name}}"></a>
+                <div class="card-body">
+                <h5>{{product.name}}</h5>
+                <h6>{{product.price}}</h6>
+              </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="mx_auto">
+        {% if products.paginator.num_pages > 1 %}
+
+        <hr>
+        <div class="text-center">
+            {% for pg in products.paginator.page_range %}
+            <a href="?page={{pg}}" class="btn btn-light btn-sm {% if products.number == pg %} active {% endif %}">{{pg}}</a>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}
